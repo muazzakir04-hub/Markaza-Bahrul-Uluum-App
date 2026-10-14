@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="om">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123c2c">
+<title>MARKAZA BAHRUL ULUUM</title>
+<style>
+:root{--green:#123c2c;--green2:#1f6b4b;--gold:#c49a35;--cream:#f7f5ec;--ink:#20352b}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Noto Naskh Arabic",sans-serif}
+header{background:linear-gradient(135deg,var(--green),var(--green2));color:white;text-align:center;padding:24px 16px 20px;border-bottom:5px solid var(--gold)}
+.logo{font-size:35px}h1{font-size:22px;margin:8px 0 4px}header p{margin:4px 0;font-size:14px}
+main{padding:14px;max-width:780px;margin:auto}.hero{background:#fff;border:1px solid #e4dfcc;border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:0 4px 14px #163c2b10}
+h2{font-size:19px;color:var(--green);margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+button,.tile{font:inherit;cursor:pointer;border:1px solid #ded8c4;border-radius:13px;padding:13px;background:white;color:var(--ink);text-align:start}
+.tile strong{display:block;color:var(--green);font-size:16px;margin:5px 0}.tile span{font-size:13px;color:#58675e}
+.primary{background:var(--green);color:white;border:0;text-align:center;font-weight:bold;width:100%;margin-top:8px}.secondary{background:#f3ecd7;color:var(--green);border-color:#dfc77e}
+.rule{padding:12px 0;border-bottom:1px solid #eee8d8}.rule:last-child{border-bottom:0}.ar{font-size:21px;direction:rtl;text-align:right;color:#15513b;line-height:1.8}.muted{font-size:13px;color:#68766c}.q{padding:12px 0;border-bottom:1px solid #eee8d8}.choice{display:block;width:100%;margin:7px 0;text-align:start}.correct{background:#e0f2df!important;border-color:#4a9b58!important}.wrong{background:#fbe2df!important;border-color:#c66!important}.hidden{display:none}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tabs button{flex:1;text-align:center}.footer{text-align:center;font-size:13px;padding:18px;color:#607064}
+</style>
+</head>
+<body>
+<header><div class="logo">📖 🌿</div><h1>MARKAZA BAHRUL ULUUM</h1><div dir="rtl">مركز بحر العلوم</div><p>Barnoota Tajwiidaa • تعليم التجويد</p><p>Afaan Oromoo + اللغة العربية</p></header>
+<main>
+<section id="home">
+<div class="hero"><h2>بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</h2><p><b>Barnoota Tajwiidaa keessan baga nagaan dhuftan!</b></p><p>Appiin kun kitaaba <span dir="rtl">رياضة الأطفال في تعليم إتقان القرآن الكريم</span> irratti hundaa'a. Barnoota, fakkeenya, qormaata fi kitaaba guutuu offline dubbisaa.</p><button class="primary" onclick="openBook()">📚 Kitaaba guutuu dubbisi / اقرأ الكتاب كاملاً</button></div>
+<div class="grid">
+<button class="tile" onclick="show('lessons')">📘<strong>Boqonnaawwan</strong><span>الدروس • Lessons</span></button>
+<button class="tile" onclick="show('rules')">🟢<strong>Seerota Tajwiidaa</strong><span>أحكام التجويد</span></button>
+<button class="tile" onclick="show('quiz')">📝<strong>Qormaata</strong><span>اختبر معلوماتك</span></button>
+<button class="tile" onclick="show('audio')">🎧<strong>Dhaggeeffadhu</strong><span>استمع وتدرّب</span></button>
+</div>
+<div class="hero" style="margin-top:14px"><h2>🎯 Karoora barnootaa</h2><p>1. Barnoota tokko dubbisi.</p><p>2. Fakkeenya Qur'aanaa ilaali.</p><p>3. Sagalee qubee shaakali.</p><p>4. Qormaata deebisi; achiis barsiisaa waliin qara'i.</p><p class="muted">Hubachiisa: sagalee bilbila (Text-to-Speech) irratti hirkata; sagalee Arabaa yoo hin jirre, Afaan/voice Arabaa bilbila keessatti buufadhu.</p></div>
+</section>
+<section id="lessons" class="hidden">
+<div class="tabs"><button onclick="show('home')">← Mana</button><button onclick="show('rules')">Seerota</button><button onclick="show('quiz')">Qormaata</button></div>
+<div class="hero"><h2>📘 Boqonnaawwan / الدروس</h2><div id="lessonList"></div></div>
+</section>
+<section id="rules" class="hidden">
+<div class="tabs"><button onclick="show('home')">← Mana</button><button onclick="show('lessons')">Boqonnaawwan</button><button onclick="show('quiz')">Qormaata</button></div>
+<div class="hero"><h2>🟢 Seerota Tajwiidaa / أحكام التجويد</h2><div id="ruleList"></div></div>
+</section>
+<section id="detail" class="hidden"><div class="tabs"><button onclick="show('lessons')">← Boqonnaawwan</button><button onclick="show('audio')">🎧 Dhaggeeffadhu</button></div><div class="hero" id="detailBody"></div></section>
+<section id="quiz" class="hidden"><div class="tabs"><button onclick="show('home')">← Mana</button><button onclick="show('lessons')">Boqonnaawwan</button></div><div class="hero"><h2>📝 Qormaata Tajwiidaa</h2><p>Deebii sirrii filadhu.</p><div id="quizBody"></div><p id="score"></p><button class="primary" onclick="startQuiz()">Qormaata haaromsi / أعد الاختبار</button></div></section>
+<section id="audio" class="hidden"><div class="tabs"><button onclick="show('home')">← Mana</button><button onclick="show('lessons')">Boqonnaawwan</button></div><div class="hero"><h2>🎧 Barnoota sagalee / التدريب الصوتي</h2><p>Qubee ykn jecha armaan gadii filadhu; bilbilli kee yoo voice Arabic qabaate sagaleen dubbisa.</p><div class="grid" id="letters"></div><p class="muted">Sagaleen kun gargaarsa shaakalaati; makhrajii sirrii barsiisaa Qur'aanaa irraa barachuun barbaachisaa dha.</p></div></section>
+</main>
+<div class="footer">MARKAZA BAHRUL ULUUM — مركز بحر العلوم<br>اللهم انفع بهذا العلم واجعله خالصًا لوجهك الكريم</div>
+<script>
+const lessons=[
+["Qubee Arabaa","حروف الهجاء","Qubee 29 (akka lakkaa'insa barnootaatti) adda baasi; maqaa isaanii fi sochii isaanii shaakali.","أ، ب، ت، ث، ج، ح، خ","Qubee wal fakkaatan akkamitti addaan baafatta?"],
+["Makhaarijul Huruuf","مخارج الحروف","Qubee tokkoon tokkoon isaa bakka afaanii irraa eessaa akka bahu baradhu. Makhaarijii waliigalaa shan: al-jawf, al-halq, al-lisaan, ash-shafataan, al-khayshuum.","قُلْ، مِنْ، أَنْعَمْتَ","Makhaarijii waliigalaa shan tarreessi."],
+["Sifaata Huruuf","صفات الحروف","Sifaat qubee wal fakkaatan addaan baasuuf gargaaru; makhrajii fi sifaa waliin eegi.","ص / س ، ط / ت ، ح / ه","Sifaat qubee maaliif barbaachisa?"],
+["Noon Saakinah fi Tanwiin","أحكام النون الساكنة والتنوين","Izhaar, Idghaam, Iqlaab fi Ikhfaa jechuun seerota afur baradhu; qubee itti aanu irratti hundaa'u.","مِنْ هَادٍ، مَنْ يَعْمَلْ، سَمِيعٌ بَصِيرٌ","Seerota noon saakinah fi tanwiin afur tarreessi."],
+["Miim Saakinah","أحكام الميم الساكنة","Ikhfaa shafawii, Idghaam shafawii fi Izhaar shafawii shaakali.","تَرْمِيهِمْ بِحِجَارَةٍ، لَهُمْ مَا","Miim saakinah b dura yoo dhufe seerri isaa maali?"],
+["Madd","المدود","Madd aslii fi madd far'ii adda baasi; dheerina isaa barsiisaa irraa dhaggeeffadhu.","قَالَ، جَاءَ، آمَنُوا","Madd aslii yeroo meeqa dheerata?"],
+["Ghunnah","الغنة","Ghunnah sagalee funyaanii irraa bahu; Noon fi Miim mushaddad irratti ghunnah guutuu shaakali.","إِنَّ، ثُمَّ","Ghunnah keessatti qaamni sagalee maali?"],
+["Qalqalah","القلقلة","Qalqalah qubeewwan ق ط ب ج د irratti yeroo sukuun jiran dhaga'ama.","يَجْعَلْ، أَحَدْ","Qubeewwan qalqalah tarreessi."],
+["Tafkhiim fi Tarqiiq","التفخيم والترقيق","Qubeewwan tokko tokko furdisanii, kaan immoo laaffisanii dubbisuun seera tajwiidaa keessaa dha.","قَالَ، بِسْمِ","Tafkhiim jechuun maal jechuudha?"],
+["Waqf fi Ibtidaa","الوقف والابتداء","Mallattoo waqfii hubadhu; hiika aayataa hin balleessin, bakka sirrii irratti dhaabi.","م، لا، ج","Waqf sirrii maaliif barbaachisa?"],
+["Naamusa Qara'aa","آداب تلاوة القرآن","Ikhlaasa, qulqullina, tasgabbiin qara'uu fi barsiisaa irraa sirreeffama fudhachuu eegi.","رَتِّلِ الْقُرْآنَ تَرْتِيلًا","Dogoggora qara'aa sirreessuuf maal gochuu qabda?"],
+["Sadarkaalee Qara'aa","مراتب قراءة القرآن","Tahqiiq, Hadr fi Tadwiir jechoota qara'aa keessatti beekamoo dha; tartiiba fi sirrummaa eeguun barbaachisaa dha.","التحقيق، التدوير، الحدر","Tartiiba fi tajwiida eeguuf maaltu barbaachisa?"]
+];
+const rules=[
+["Izhaar","الإظهار الحلقي","Noon saakinah/tanwiin booda ء ه ع ح غ خ yoo dhufe, ifatti dubbisi.","مِنْ هَادٍ"],
+["Idghaam","الإدغام","Noon saakinah/tanwiin booda يرملون keessaa qubee tokko yoo dhufe, seera idghaam hojiirra oolchi.","مَنْ يَعْمَلْ"],
+["Iqlaab","الإقلاب","Noon saakinah/tanwiin booda ب yoo dhufe, noon gara miimitti jijjiiramee ghunnah waliin dubbifama.","سَمِيعٌ بَصِيرٌ"],
+["Ikhfaa","الإخفاء الحقيقي","Noon saakinah/tanwiin booda qubee ikhfaa keessaa yoo dhufe, sagalee giddu-galeessa ghunnah waliin dubbisi.","مِنْ شَرِّ"],
+["Ikhfaa Shafawii","الإخفاء الشفوي","Miim saakinah booda ب yoo dhufe, miim ghunnah waliin dhoksaadhaan dubbisi.","تَرْمِيهِمْ بِحِجَارَةٍ"],
+["Idghaam Shafawii","الإدغام الشفوي","Miim saakinah booda م yoo dhufe, miim lama walitti maki ghunnah waliin dubbisi.","لَهُمْ مَا"],
+["Izhaar Shafawii","الإظهار الشفوي","Miim saakinah booda م fi ب malee qubee biraa yoo dhufe, miim ifatti dubbisi.","أَنْعَمْتَ"],
+["Madd Aslii","المد الطبيعي","Madd aslii yeroo baay'ee haraka lama dheerata; qira'aa fi riwaayaa barsiisaa irraa mirkaneessi.","قَالَ، قِيلَ، يَقُولُ"],
+["Ghunnah","الغنة","Sagalee funyaanii; Noon fi Miim mushaddad irratti ghunnah guutuu qaba.","إِنَّ، ثُمَّ"],
+["Qalqalah","القلقلة","Q T B J D (ق ط ب ج د) keessaa tokko sukuun yoo ta'e, sagalee qalqalah kenni.","أَحَدْ، يَجْعَلْ"],
+["Tafkhiim","التفخيم","Qubeewwan isti'laa (خ ص ض غ ط ق ظ) waliigalaan furdisanii dubbifamu; haala qubee fi harakaatiinis seerri ni bal'ata.","قَالَ، خَلَقَ"],
+["Waqf","الوقف","Bakka waqfii fi ibtidaa hubadhu; hiika Qur'aanaa hin jijjiirin.","Mallattoolee waqfii Mushafaa"]
+];
+const quiz=[
+{q:"Noon saakinah/tanwiin booda ب yoo dhufe seerri maali?",opts:["Izhaar","Iqlaab","Qalqalah"],a:1,why:"Iqlaab: noon gara miimitti jijjiiramee ghunnah waliin dubbifama."},
+{q:"Qubeewwan qalqalah mee kam?",opts:["ق ط ب ج د","ء ه ع ح غ خ","يرملون"],a:0,why:"Qubeewwan qalqalah: ق ط ب ج د."},
+{q:"Makhaarijii waliigalaa shan keessaa tokko kami?",opts:["Al-jawf","Al-madd","Al-idghaam"],a:0,why:"Makhaarijii waliigalaa: al-jawf, al-halq, al-lisaan, ash-shafataan, al-khayshuum."},
+{q:"Ghunnah eessaa ba'a?",opts:["Arraba qofa","Funyaanii (khayshuum)","Ilkaan"],a:1,why:"Ghunnah sagalee funyaanii (al-khayshuum) waliin walqabata."},
+{q:"Madd aslii yeroo meeqa dheerata?",opts:["Haraka lama","Haraka shan yeroo hunda","Hin dheeratu"],a:0,why:"Madd aslii yeroo baay'ee haraka lama dheerata; barnoota riwaayaa fi barsiisaa waliin mirkaneessi."},
+{q:"Qubeewwan izhaar halqii mee kam?",opts:["ء ه ع ح غ خ","ق ط ب ج د","ص ض ط ظ"],a:0,why:"Qubeewwan izhaar: ء ه ع ح غ خ."}
+];
+function show(id){document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");window.scrollTo(0,0)}
+function openBook(){if(window.AndroidApp&&AndroidApp.openBook)AndroidApp.openBook();else alert("Kitaaba PDF kana app Android keessatti dubbisuuf APK ijaari. Browser qofa keessatti PDF asset hin banamu.");}
+function renderLessons(){document.getElementById("lessonList").innerHTML=lessons.map((l,i)=>`<button class="rule" style="width:100%;text-align:start" onclick="detailLesson(${i})"><b>${i+1}. ${l[0]}</b><div class="ar">${l[1]}</div><span class="muted">Barnoota fi shaakala ilaali →</span></button>`).join("")}
+function renderRules(){document.getElementById("ruleList").innerHTML=rules.map((r,i)=>`<div class="rule"><b>${i+1}. ${r[0]}</b><div class="ar">${r[1]}</div><p>${r[2]}</p><div class="ar">${r[3]}</div></div>`).join("")}
+function detailLesson(i){let l=lessons[i];document.getElementById("detailBody").innerHTML=`<h2>${i+1}. ${l[0]}</h2><div class="ar">${l[1]}</div><p>${l[2]}</p><h3>Fakkeenya / أمثلة</h3><div class="ar">${l[3]}</div><h3>Gaaffii irra-deebii</h3><p>${l[4]}</p><button class="secondary" onclick="speak('${l[0]} . ${l[1]} . ${l[2]} . ${l[3]}')">🔊 Sagaleedhaan dubbisi</button><p class="muted">Qara'aa Qur'aanaa keessatti fakkeenya kana barsiisaa waliin dhaggeeffadhu; barreeffamni qofti bakka talqiin hin bu'u.</p>`;show("detail")}
+function startQuiz(){let score=0;document.getElementById("score").textContent="";document.getElementById("quizBody").innerHTML=quiz.map((q,i)=>`<div class="q"><b>${i+1}. ${q.q}</b>${q.opts.map((o,j)=>`<button class="choice" onclick="answer(this,${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}<p id="why${i}" class="muted"></p></div>`).join("");window.quizDone={};}
+function answer(btn,i,j){if(window.quizDone[i])return;window.quizDone[i]=true;let q=quiz[i];let all=btn.parentElement.querySelectorAll("button");all[q.a].classList.add("correct");if(j!==q.a)btn.classList.add("wrong");else window.quizScore=(window.quizScore||0)+1;document.getElementById("why"+i).textContent=q.why;let n=Object.keys(window.quizDone).length;document.getElementById("score").textContent=`Deebii: ${n}/${quiz.length} | Sirrii: ${window.quizScore||0}`;}
+function speak(t){if(!('speechSynthesis' in window)){alert("Sagaleen dubbisuu bilbila kana irratti hin deeggaramu.");return;}let u=new SpeechSynthesisUtterance(t);u.lang=/[\u0600-\u06FF]/.test(t)?"ar":"om-ET";u.rate=.82; speechSynthesis.cancel();speechSynthesis.speak(u);}
+function renderLetters(){let letters=["أ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","ه","و","ي"];document.getElementById("letters").innerHTML=letters.map(ch=>`<button onclick="speak('${ch}')" class="secondary" style="text-align:center;font-size:25px">${ch}<br><span style="font-size:12px">🔊 dhaggeeffadhu</span></button>`).join("")}
+renderLessons();renderRules();renderLetters();startQuiz();
+</script>
+</body></html>
